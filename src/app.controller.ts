@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Request,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { User } from './user.schema';
@@ -18,6 +19,10 @@ export class AppController {
   @Post()
   async createUser(@Body() userDto: User) {
     return this.appService.createUser(userDto);
+  }
+  @Post('login')
+  async login(@Body() userDto: Record<string, any>) {
+    return this.appService.login(userDto.email, userDto.password);
   }
   @Get()
   readUser() {
