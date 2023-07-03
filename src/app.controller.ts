@@ -28,7 +28,7 @@ export class AppController {
   readUser() {
     return this.appService.readUser();
   }
-  @Get(':id') // Route to get a single user by ID
+  @Get('profile') // Route to get a single user by ID
   async getUserById(@Param('id') id: string) {
     return this.appService.getUserById(id);
   }

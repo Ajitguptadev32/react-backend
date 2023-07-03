@@ -30,10 +30,10 @@ export class AppService {
     if (!passwordMatch) {
       throw new UnauthorizedException('Invalid password');
     }
-    const payload = { sub: user.id, email: user.email };
-    return {
-      Token: await this.jwtService.signAsync(payload),
-    };
+    const payload = { sub: user._id, email: user.email };
+    const token = await this.jwtService.signAsync(payload);
+
+    return { email: user.email, token };
   }
 
   // creating a user
