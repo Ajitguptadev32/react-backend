@@ -37,14 +37,30 @@ export class AppService {
   }
 
   // creating a user
-  async createUser(user: User): Promise<User> {
+  async createUser(user: User, files: Express.Multer.File): Promise<User> {
     const saltOrRounds = 10;
-    const hashedPassword = await bcrypt.hash(user.password, saltOrRounds);
-    const newUser = new this.userModel({
-      ...user,
-      password: hashedPassword,
-    });
-    return newUser.save();
+
+    if (!user.password) {
+      throw new Error('Password is required.'); // Or handle the missing password case accordingly
+    }
+
+    try {
+      const hashedPassword = await bcrypt.hash(user.password, saltOrRounds);
+      console.log('hashedPassword', hashedPassword);
+      user.password = hashedPassword;
+
+      // Rest of your code...
+
+      const newUser = new this.userModel({
+        ...user,
+      });
+
+      console.log('newUser', newUser);
+      return newUser.save();
+    } catch (err) {
+      // Handle any errors that may occur during hashing
+      throw new Error('Error creating user: ' + err.message);
+    }
   }
 
   // get users
